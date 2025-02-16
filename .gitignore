@@ -14,6 +14,7 @@ dist-ssr
 .env
 .venv
 __pycache__
+yt_cookies.txt
 
 # Editor directories and files
 .vscode/*

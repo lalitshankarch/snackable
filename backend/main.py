@@ -6,6 +6,7 @@ import json
 import webvtt
 from dotenv import load_dotenv
 import os
+import uvicorn
 
 load_dotenv()
 app = FastAPI()
@@ -14,7 +15,7 @@ app.add_middleware(
     allow_origins=["*"],
     allow_methods=["GET"],
 )
-ydl = yt_dlp.YoutubeDL({"quiet": True})
+ydl = yt_dlp.YoutubeDL({"quiet": True, "cookiefile" : "yt_cookies.txt"})
 
 
 @app.get("/summarize")
@@ -68,3 +69,7 @@ async def summarize(url: str = Query(..., description="YouTube URL")):
         return {"result": "success", "summary": summary, "message": "Summarized successfully."}
     except:
         return {"result": "error", "message": "Failed to get summary. Possibly invalid URL."}
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
