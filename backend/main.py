@@ -47,7 +47,7 @@ async def summarize(url: str = Query(..., description="YouTube URL")):
             [caption.text.replace("\n", " ") for caption in vtt_captions]
         )
 
-        prompt = "Summarize the provided text. Focus on the main points and cover everything."
+        prompt = "Summarize the following YouTube transcript concisely, covering all key points. Plaintext output only."
 
         response = requests.post(
             url="https://openrouter.ai/api/v1/chat/completions",

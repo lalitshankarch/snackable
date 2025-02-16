@@ -49,6 +49,7 @@ const URLInput = () => {
           }
         } catch (e) {
           setStatus(Status.Error);
+          setMessage('Failed to connect to backend.');
         }
       } else {
         setError("Please enter a valid YouTube URL");
