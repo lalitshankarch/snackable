@@ -29,14 +29,12 @@ async def summarize(url: str = Query(..., description="YouTube URL")):
             return {"result": "error", "message": "No captions present."}
 
         captions = subtitles if subtitles else auto_captions
+        eng_captions_lst = [captions[lang] for lang in captions if 'en' in lang]
 
-        en = captions.get("en")
-        en_orig = captions.get("en-orig")
-
-        if not en and not en_orig:
+        if not eng_captions_lst:
             return {"result": "error", "message": "No English captions present."}
 
-        eng_captions = en if en else en_orig
+        eng_captions = eng_captions_lst[0]
         vtt = next((fmt for fmt in eng_captions if fmt["ext"] == "vtt"), None)
 
         if not vtt:
