@@ -41,30 +41,43 @@ async def summarize(url: str = Query(..., description="YouTube URL")):
         if not vtt:
             return {"result": "error", "message": "VTT format not present."}
 
-        vtt_captions = webvtt.from_string(requests.get(vtt["url"]).text)
-        processed_captions = " ".join(
-            [caption.text.replace("\n", " ") for caption in vtt_captions]
-        )
+        try:
+            downloaded_captions = requests.get(vtt["url"]).text
+        except:
+            return {"result": "error", "message": "Failed to download captions."}
+
+        vtt_captions = webvtt.from_string(downloaded_captions)
+
+        try:
+            processed_captions = " ".join(
+                [caption.text.replace("\n", " ") for caption in vtt_captions]
+            )
+        except:
+            return {"result": "error", "message": "Failed to process captions."}
 
         prompt = "Summarize the following YouTube transcript concisely, covering all key points. Plaintext output only."
 
-        response = requests.post(
-            url="https://openrouter.ai/api/v1/chat/completions",
-            headers={
-                "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
-                "HTTP-Referer": "https://www.getsnackable.app/",
-                "X-Title": "Snackable",
-            },
-            data=json.dumps(
-                {
-                    "model": "google/gemini-2.0-flash-exp:free",
-                    "messages": [
-                        {"role": "user", "content": f"{prompt}\n{processed_captions}"}
-                    ],
-                }
-            ),
-        )
-        summary = response.json()["choices"][0]["message"]["content"]
+        try:
+            response = requests.post(
+                url="https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
+                    "HTTP-Referer": "https://www.getsnackable.app/",
+                    "X-Title": "Snackable",
+                },
+                data=json.dumps(
+                    {
+                        "model": "google/gemini-2.0-flash-exp:free",
+                        "messages": [
+                            {"role": "user", "content": f"{prompt}\n{processed_captions}"}
+                        ],
+                    }
+                ),
+            )
+
+            summary = response.json()["choices"][0]["message"]["content"]
+        except:
+            return {"result": "error", "message": "Failed to summarize captions."}
 
         return {"result": "success", "summary": summary, "message": "Summarized successfully."}
     except:
