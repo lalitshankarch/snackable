@@ -31,7 +31,7 @@ const URLInput = () => {
 
         try {
           const res = await fetch(
-            `https://snackable.onrender.com/summarize?url=${input}`
+            `https://snackable.up.railway.app/summarize?url=${input}`
           );
           if (!res.ok) {
             throw new Error("Server error");
