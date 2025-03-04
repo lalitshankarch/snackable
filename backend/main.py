@@ -15,7 +15,7 @@ app.add_middleware(
     allow_origins=["*"],
     allow_methods=["GET"],
 )
-ydl = yt_dlp.YoutubeDL({"quiet": True, "cookiefile" : os.environ.get('YT_COOKIES', "")})
+ydl = yt_dlp.YoutubeDL({"quiet": True, "cookiefile" : "yt_cookies.txt"})
 
 
 @app.get("/summarize")
@@ -61,7 +61,7 @@ async def summarize(url: str = Query(..., description="YouTube URL")):
             response = requests.post(
                 url="https://openrouter.ai/api/v1/chat/completions",
                 headers={
-                    "Authorization": f"Bearer {os.environ.get('OPENROUTER_API_KEY', "")}",
+                    "Authorization": f"Bearer {os.environ.get('OPENROUTER_API_KEY', '')}",
                     "HTTP-Referer": "https://www.getsnackable.app/",
                     "X-Title": "Snackable",
                 },
