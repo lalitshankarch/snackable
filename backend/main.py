@@ -19,8 +19,9 @@ ydl = yt_dlp.YoutubeDL({"quiet": True, "cookiefile" : "yt_cookies.txt"})
 
 
 @app.get("/")
+@app.head("/")
 async def root():
-    return {'message': 'I am live!'}
+    pass
 
 @app.get("/summarize")
 async def summarize(url: str = Query(..., description="YouTube URL")):
