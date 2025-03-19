@@ -72,7 +72,7 @@ async def summarize(url: str = Query(..., description="YouTube URL")):
                 },
                 data=json.dumps(
                     {
-                        "model": "google/gemini-2.0-flash-exp:free",
+                        "model": "google/gemma-3-27b-it:free",
                         "messages": [
                             {"role": "user", "content": f"{prompt}\n{processed_captions}"}
                         ],
