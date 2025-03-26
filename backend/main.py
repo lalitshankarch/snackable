@@ -15,13 +15,14 @@ app.add_middleware(
     allow_origins=["*"],
     allow_methods=["GET"],
 )
-ydl = yt_dlp.YoutubeDL({"quiet": True, "cookiefile" : "yt_cookies.txt"})
+ydl = yt_dlp.YoutubeDL({"quiet": True, "cookiefile": "yt_cookies.txt"})
 
 
 @app.get("/")
 @app.head("/")
 async def root():
     pass
+
 
 @app.get("/summarize")
 async def summarize(url: str = Query(..., description="YouTube URL")):
@@ -35,7 +36,7 @@ async def summarize(url: str = Query(..., description="YouTube URL")):
             return {"result": "error", "message": "No captions present."}
 
         captions = subtitles if subtitles else auto_captions
-        eng_captions_lst = [captions[lang] for lang in captions if 'en' in lang]
+        eng_captions_lst = [captions[lang] for lang in captions if "en" in lang]
 
         if not eng_captions_lst:
             return {"result": "error", "message": "No English captions present."}
@@ -74,7 +75,10 @@ async def summarize(url: str = Query(..., description="YouTube URL")):
                     {
                         "model": "google/gemini-2.5-pro-exp-03-25:free",
                         "messages": [
-                            {"role": "user", "content": f"{prompt}\n{processed_captions}"}
+                            {
+                                "role": "user",
+                                "content": f"{prompt}\n{processed_captions}",
+                            }
                         ],
                     }
                 ),
@@ -84,9 +88,17 @@ async def summarize(url: str = Query(..., description="YouTube URL")):
         except:
             return {"result": "error", "message": "Failed to summarize captions."}
 
-        return {"result": "success", "summary": summary, "message": "Summarized successfully."}
+        return {
+            "result": "success",
+            "summary": summary,
+            "message": "Summarized successfully.",
+        }
     except:
-        return {"result": "error", "message": "Failed to get summary. Possibly invalid URL."}
+        return {
+            "result": "error",
+            "message": "Failed to get summary. Possibly invalid URL.",
+        }
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
