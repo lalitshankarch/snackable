@@ -32,7 +32,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ message, status }) => {
           </div>
         );
       case Status.Fetched:
-        return <ReactMarkdown>{message}</ReactMarkdown>;
+        return <ReactMarkdown children={message}/>;
       case Status.Error:
         return (
           <div className="flex items-center gap-1 text-red-500">
