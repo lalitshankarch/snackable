@@ -37,9 +37,9 @@ const URLInput = () => {
             throw new Error("Server error");
           }
 
-          const data = await res.json();         
+          const data = await res.json();
           const result = data.result;
-          
+
           if (result === "error") {
             setStatus(Status.Error);
             setMessage(data.message);
@@ -49,7 +49,7 @@ const URLInput = () => {
           }
         } catch (e) {
           setStatus(Status.Error);
-          setMessage('Failed to connect to backend.');
+          setMessage("Failed to connect to backend.");
         }
       } else {
         setError("Please enter a valid YouTube URL");
@@ -68,6 +68,7 @@ const URLInput = () => {
       <p className="text-3xl text-center font-bold">What are we snacking?</p>
       <div className="flex space-x-2">
         <Input
+          autoFocus
           type="text"
           placeholder="Enter YouTube URL"
           value={input}
