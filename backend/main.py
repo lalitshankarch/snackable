@@ -64,17 +64,15 @@ async def summarize(url: str = Query(..., description="YouTube URL")):
         prompt = """
         Please summarize the following YouTube transcript. The summary should follow this structure:
 
-        •  An introduction briefly outlining the video's main themes
-        •  A summary of the key points in bullet points
-        •  A final wrap-up covering the main takeaway
+        -  An introduction briefly outlining the video's main themes
+        -  A summary of the key points in bullet points
+        -  A final wrap-up covering the main takeaway
 
         Follow these formatting rules precisely:
 
-        •  No section headers
-        •  Use ** for emphasis where appropriate
-        •  Use • for bullet points when listing key points
-        •  Do not include any commentary or extra opinions; base the summary solely on the transcript's content
-        •  Ensure the output is in correct Markdown format
+        -  No section headers
+        -  Do not include any commentary or extra opinions; base the summary solely on the transcript's content
+        -  Ensure the output is in correct Markdown format
         """
 
         try:
