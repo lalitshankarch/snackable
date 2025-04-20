@@ -63,14 +63,13 @@
     --chart-5: 340 75% 55%;
   }
 }
-@layer base {
-  * {
-    @apply border-border;
-  }
+
+@media (prefers-color-scheme: dark) {
   body {
-    @apply bg-background text-foreground dark;
+    @apply dark;
   }
 }
+
 @layer base {
   * {
     @apply border-border;
