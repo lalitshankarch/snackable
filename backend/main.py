@@ -62,17 +62,17 @@ async def summarize(url: str = Query(..., description="YouTube URL")):
             return {"result": "error", "message": "Failed to process captions."}
 
         prompt = """
-        Please summarize the following YouTube transcript. The summary should follow this structure:
+        Summarize the following YouTube transcript.
 
-        -  An introduction briefly outlining the video's main themes
-        -  A summary of the key points in bullet points
-        -  A final wrap-up covering the main takeaway
+        Structure your summary in three parts:
+        1. A 2-3 sentence introduction outlining the video's main themes
+        2. Key points as bullet points
+        3. A 1-2 sentence wrap-up with the main takeaway
 
-        Follow these formatting rules precisely:
-
-        -  No section headers
-        -  Do not include any commentary or extra opinions; base the summary solely on the transcript's content
-        -  Ensure the output is in correct Markdown format
+        Rules:
+        - No section headers or labels (don't write "Introduction:", "Key Points:", etc.)
+        - Stick strictly to the transcript's content — no outside opinions or additions
+        - Output valid Markdown
         """
 
         try:
@@ -85,13 +85,14 @@ async def summarize(url: str = Query(..., description="YouTube URL")):
                 },
                 data=json.dumps(
                     {
-                        "model": "meta-llama/llama-4-maverick:free",
+                        "model": "openrouter/free",
                         "messages": [
                             {
                                 "role": "user",
                                 "content": f"{prompt}\n{processed_captions}",
                             }
                         ],
+                        "reasoning": {"enabled": False}
                     }
                 ),
             )
